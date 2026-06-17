@@ -1,0 +1,19 @@
+{
+  "name": "fluxo-caixa",
+  "version": "2.0.0",
+  "description": "Sistema de gestão comercial com Node.js e SQLite — usuários, produtos, caixa e dashboard.",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "setup": "node backend/database/setup.js",
+    "dev":   "node backend/server.js"
+  },
+  "keywords": ["fluxo-de-caixa", "gestao-comercial", "nodejs", "sqlite", "jwt"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs":     "^2.4.3",
+    "better-sqlite3": "^9.4.3",
+    "jsonwebtoken": "^9.0.2"
+  }
+}

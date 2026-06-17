@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | Fluxo de Caixa</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="pagina-login">
+
+  <div class="login-container">
+    <div class="login-card">
+
+      <div class="login-logo">
+        <span class="login-logo__icone">💰</span>
+        <h1 class="login-logo__titulo">Fluxo de Caixa</h1>
+        <p class="login-logo__subtitulo">Sistema de Gestão Comercial</p>
+      </div>
+
+      <form id="form-login" class="formulario" novalidate>
+
+        <div class="campo">
+          <label class="campo__label" for="email">E-mail</label>
+          <input class="campo__input" type="email" id="email" name="email"
+                 placeholder="admin@admin.com" autocomplete="email" required />
+        </div>
+
+        <div class="campo">
+          <label class="campo__label" for="senha">Senha</label>
+          <div class="campo__senha-wrapper">
+            <input class="campo__input" type="password" id="senha" name="senha"
+                   placeholder="••••••••" autocomplete="current-password" required />
+            <button type="button" class="btn-toggle-senha" id="btn-toggle-senha"
+                    aria-label="Mostrar/ocultar senha">👁</button>
+          </div>
+        </div>
+
+        <div id="msg-login" class="mensagem" role="alert" aria-live="polite"></div>
+
+        <button type="submit" class="btn btn--primario btn--bloco" id="btn-entrar">
+          Entrar
+        </button>
+
+      </form>
+
+      <p class="login-rodape">
+        Versão 2.0 &mdash; Fluxo de Caixa &copy; 2024
+      </p>
+
+    </div>
+  </div>
+
+  <script src="js/login.js"></script>
+</body>
+</html>

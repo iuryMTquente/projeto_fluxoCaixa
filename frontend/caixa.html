@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fluxo de Caixa | Sistema</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="app-layout">
+
+  <!-- SIDEBAR (mesmo componente) -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__header">
+      <span class="sidebar__logo">💰</span>
+      <span class="sidebar__titulo">Fluxo de Caixa</span>
+      <button class="sidebar__fechar" id="btn-fechar-sidebar" aria-label="Fechar menu">✕</button>
+    </div>
+    <nav class="sidebar__nav">
+      <a href="index.html"    class="nav-item" data-pagina="dashboard"><span class="nav-item__icone">📊</span> Dashboard</a>
+      <a href="caixa.html"    class="nav-item nav-item--ativo" data-pagina="caixa"><span class="nav-item__icone">💵</span> Fluxo de Caixa</a>
+      <a href="produtos.html" class="nav-item" data-pagina="produtos"><span class="nav-item__icone">📦</span> Produtos</a>
+      <a href="usuarios.html" class="nav-item nav-item--admin" data-pagina="usuarios"><span class="nav-item__icone">👥</span> Usuários</a>
+    </nav>
+    <div class="sidebar__footer">
+      <div class="sidebar__usuario">
+        <span class="sidebar__usuario-avatar">👤</span>
+        <div>
+          <p class="sidebar__usuario-nome" id="nome-usuario">—</p>
+          <p class="sidebar__usuario-tipo" id="tipo-usuario">—</p>
+        </div>
+      </div>
+      <button class="btn btn--outline btn--sm btn--bloco" id="btn-logout">🚪 Sair</button>
+    </div>
+  </aside>
+
+  <div class="app-main">
+    <header class="topbar">
+      <button class="topbar__menu" id="btn-abrir-sidebar" aria-label="Abrir menu">☰</button>
+      <h1 class="topbar__titulo">💵 Fluxo de Caixa</h1>
+      <span class="topbar__badge" id="badge-usuario"></span>
+    </header>
+
+    <main class="conteudo-pagina">
+
+      <!-- Cards de resumo -->
+      <section class="grade-cards grade-cards--3" aria-label="Resumo financeiro">
+        <div class="card-stat card-stat--verde">
+          <div class="card-stat__icone">💰</div>
+          <div class="card-stat__info">
+            <span class="card-stat__label">Saldo Geral</span>
+            <span class="card-stat__valor" id="cx-saldo">R$ 0,00</span>
+          </div>
+        </div>
+        <div class="card-stat card-stat--azul">
+          <div class="card-stat__icone">📈</div>
+          <div class="card-stat__info">
+            <span class="card-stat__label">Total Entradas</span>
+            <span class="card-stat__valor" id="cx-entradas">R$ 0,00</span>
+          </div>
+        </div>
+        <div class="card-stat card-stat--vermelho">
+          <div class="card-stat__icone">📉</div>
+          <div class="card-stat__info">
+            <span class="card-stat__label">Total Saídas</span>
+            <span class="card-stat__valor" id="cx-saidas">R$ 0,00</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Formulário nova movimentação -->
+      <section class="secao-card">
+        <h2 class="secao-card__titulo">➕ Nova Movimentação</h2>
+
+        <form id="form-transacao" class="formulario formulario--grid" novalidate>
+
+          <div class="campo">
+            <label class="campo__label">Tipo *</label>
+            <div class="campo__radio-group">
+              <label class="radio-btn radio-btn--entrada">
+                <input type="radio" name="tipo_movimentacao" value="entrada" checked />
+                <span>📈 Entrada</span>
+              </label>
+              <label class="radio-btn radio-btn--saida">
+                <input type="radio" name="tipo_movimentacao" value="saida" />
+                <span>📉 Saída</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="campo">
+            <label class="campo__label" for="descricao">Descrição *</label>
+            <input class="campo__input" type="text" id="descricao" name="descricao"
+                   placeholder="Ex: Venda de produto, Conta de luz..." required />
+          </div>
+
+          <div class="campo">
+            <label class="campo__label" for="valor">Valor (R$) *</label>
+            <input class="campo__input" type="number" id="valor" name="valor"
+                   placeholder="0,00" min="0.01" step="0.01" required />
+          </div>
+
+          <div class="campo">
+            <label class="campo__label" for="categoria">Categoria</label>
+            <select class="campo__input" id="categoria" name="categoria">
+              <option value="vendas">🛒 Vendas</option>
+              <option value="recebimentos">💳 Recebimentos</option>
+              <option value="depositos">🏦 Depósitos</option>
+              <option value="despesas">💸 Despesas</option>
+              <option value="fornecedores">🏭 Fornecedores</option>
+              <option value="contas">📋 Contas</option>
+              <option value="geral" selected>📌 Geral</option>
+            </select>
+          </div>
+
+          <div class="campo">
+            <label class="campo__label" for="forma_pagamento">Forma de Pagamento</label>
+            <select class="campo__input" id="forma_pagamento" name="forma_pagamento">
+              <option value="dinheiro">💵 Dinheiro</option>
+              <option value="pix">📱 PIX</option>
+              <option value="cartao_debito">💳 Cartão Débito</option>
+              <option value="cartao_credito">💳 Cartão Crédito</option>
+              <option value="transferencia">🏦 Transferência</option>
+              <option value="outro">📌 Outro</option>
+            </select>
+          </div>
+
+          <div class="campo">
+            <label class="campo__label" for="data_movimentacao">Data *</label>
+            <input class="campo__input" type="date" id="data_movimentacao" name="data_movimentacao" required />
+          </div>
+
+          <div id="msg-form" class="mensagem campo--full" role="alert" aria-live="polite"></div>
+
+          <div class="campo--full campo__acoes">
+            <button type="submit" class="btn btn--primario" id="btn-salvar">
+              💾 Registrar
+            </button>
+            <button type="button" class="btn btn--outline" id="btn-limpar">
+              🔄 Limpar
+            </button>
+          </div>
+
+        </form>
+      </section>
+
+      <!-- Filtros e listagem -->
+      <section class="secao-card">
+        <div class="secao-card__header">
+          <h2 class="secao-card__titulo">📋 Histórico de Movimentações</h2>
+          <div class="filtros">
+            <input class="campo__input campo__input--sm" type="date" id="filtro-inicio" placeholder="De" />
+            <input class="campo__input campo__input--sm" type="date" id="filtro-fim"    placeholder="Até" />
+            <select class="campo__input campo__input--sm" id="filtro-tipo">
+              <option value="">Todos</option>
+              <option value="entrada">Entradas</option>
+              <option value="saida">Saídas</option>
+            </select>
+            <button class="btn btn--primario btn--sm" id="btn-filtrar">🔍 Filtrar</button>
+            <button class="btn btn--outline btn--sm"  id="btn-limpar-filtro">✕ Limpar</button>
+          </div>
+        </div>
+
+        <div class="tabela-wrapper">
+          <table class="tabela" id="tabela-transacoes">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Tipo</th>
+                <th>Descrição</th>
+                <th>Categoria</th>
+                <th>Pagamento</th>
+                <th>Valor</th>
+                <th>Usuário</th>
+                <th class="col-acoes">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-transacoes">
+              <tr><td colspan="8" class="tabela__vazio">Carregando...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <script src="js/utils.js"></script>
+  <script src="js/caixa.js"></script>
+</body>
+</html>

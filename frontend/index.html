@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | Fluxo de Caixa</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="app-layout">
+
+  <!-- ══ SIDEBAR ══════════════════════════════════════════════════════════ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__header">
+      <span class="sidebar__logo">💰</span>
+      <span class="sidebar__titulo">Fluxo de Caixa</span>
+      <button class="sidebar__fechar" id="btn-fechar-sidebar" aria-label="Fechar menu">✕</button>
+    </div>
+
+    <nav class="sidebar__nav" aria-label="Menu principal">
+      <a href="index.html"      class="nav-item nav-item--ativo" data-pagina="dashboard">
+        <span class="nav-item__icone">📊</span> Dashboard
+      </a>
+      <a href="caixa.html"      class="nav-item" data-pagina="caixa">
+        <span class="nav-item__icone">💵</span> Fluxo de Caixa
+      </a>
+      <a href="produtos.html"   class="nav-item" data-pagina="produtos">
+        <span class="nav-item__icone">📦</span> Produtos
+      </a>
+      <a href="usuarios.html"   class="nav-item nav-item--admin" data-pagina="usuarios">
+        <span class="nav-item__icone">👥</span> Usuários
+      </a>
+    </nav>
+
+    <div class="sidebar__footer">
+      <div class="sidebar__usuario" id="sidebar-usuario">
+        <span class="sidebar__usuario-avatar">👤</span>
+        <div>
+          <p class="sidebar__usuario-nome" id="nome-usuario">Carregando...</p>
+          <p class="sidebar__usuario-tipo" id="tipo-usuario">—</p>
+        </div>
+      </div>
+      <button class="btn btn--outline btn--sm btn--bloco" id="btn-logout">
+        🚪 Sair
+      </button>
+    </div>
+  </aside>
+
+  <!-- ══ CONTEÚDO PRINCIPAL ════════════════════════════════════════════════ -->
+  <div class="app-main">
+
+    <!-- Topbar mobile -->
+    <header class="topbar">
+      <button class="topbar__menu" id="btn-abrir-sidebar" aria-label="Abrir menu">☰</button>
+      <h1 class="topbar__titulo">Dashboard</h1>
+      <span class="topbar__badge" id="badge-usuario"></span>
+    </header>
+
+    <main class="conteudo-pagina" id="conteudo">
+
+      <!-- ── Cards de resumo ─────────────────────────────────────────────── -->
+      <section class="grade-cards" aria-label="Resumo financeiro">
+
+        <div class="card-stat card-stat--verde">
+          <div class="card-stat__icone">💰</div>
+          <div class="card-stat__info">
+            <span class="card-stat__label">Saldo Total</span>
+            <span class="card-stat__valor" id="dash-saldo">R$ 0,00</span>
+          </div>
+        </div>
+
+        <div class="card-stat card-stat--azul">
+          <div class="card-stat__icone">📈</div>
+          <div class="card-stat__info">
+            <span class="card-stat__label">Entradas Hoje</span>
+            <span class="card-stat__valor" id="dash-entradas-dia">R$ 0,00</span>
+          </div>
+        </div>
+
+        <div class="card-stat card-stat--vermelho">
+          <div class="card-stat__icone">📉</div>
+          <div class="card-stat__info">
+            <span class="card-stat__label">Saídas Hoje</span>
+            <span class="card-stat__valor" id="dash-saidas-dia">R$ 0,00</span>
+          </div>
+        </div>
+
+        <div class="card-stat card-stat--laranja">
+          <div class="card-stat__icone">🛒</div>
+          <div class="card-stat__info">
+            <span class="card-stat__label">Vendas Hoje</span>
+            <span class="card-stat__valor" id="dash-vendas-dia">R$ 0,00</span>
+          </div>
+        </div>
+
+        <div class="card-stat card-stat--roxo">
+          <div class="card-stat__icone">📦</div>
+          <div class="card-stat__info">
+            <span class="card-stat__label">Total Produtos</span>
+            <span class="card-stat__valor" id="dash-total-produtos">0</span>
+          </div>
+        </div>
+
+        <div class="card-stat card-stat--amarelo">
+          <div class="card-stat__icone">⚠️</div>
+          <div class="card-stat__info">
+            <span class="card-stat__label">Estoque Baixo</span>
+            <span class="card-stat__valor" id="dash-estoque-baixo">0</span>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ── Gráfico 7 dias ──────────────────────────────────────────────── -->
+      <section class="secao-card">
+        <h2 class="secao-card__titulo">📊 Movimentações — Últimos 7 Dias</h2>
+        <div class="grafico-container" id="grafico-container">
+          <canvas id="grafico-barras" height="220"></canvas>
+        </div>
+      </section>
+
+      <!-- ── Alertas de estoque ──────────────────────────────────────────── -->
+      <section class="secao-card" id="secao-alertas" style="display:none">
+        <h2 class="secao-card__titulo">⚠️ Produtos com Estoque Baixo</h2>
+        <div class="tabela-wrapper">
+          <table class="tabela" id="tabela-alertas">
+            <thead>
+              <tr>
+                <th>Produto</th>
+                <th>Categoria</th>
+                <th>Estoque</th>
+                <th>Mínimo</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-alertas"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ── Últimas movimentações ───────────────────────────────────────── -->
+      <section class="secao-card">
+        <h2 class="secao-card__titulo">🕐 Últimas Movimentações</h2>
+        <div class="tabela-wrapper">
+          <table class="tabela" id="tabela-movs">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Tipo</th>
+                <th>Descrição</th>
+                <th>Categoria</th>
+                <th>Valor</th>
+                <th>Usuário</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-movs">
+              <tr><td colspan="6" class="tabela__vazio">Carregando...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Overlay sidebar mobile -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <script src="js/utils.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

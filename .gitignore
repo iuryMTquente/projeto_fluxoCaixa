@@ -1,0 +1,6 @@
+node_modules/
+package-lock.json
+*.db
+*.db-shm
+*.db-wal
+- remove node_modules e package-lock.json
